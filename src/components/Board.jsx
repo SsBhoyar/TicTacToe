@@ -7,7 +7,7 @@ import Slot from "./Slot";
 const Board = () => {
   const [slot, setSlot] = useState(Array(9).fill(null));
   const [turnX, setTurnX] = useState(true);
-  const [exitComp, setExitComp] = useState(false);
+  const [exitComp, setExitComp] = useState(true);
 
   //Framer-Motion
   const container = {
@@ -68,7 +68,7 @@ const Board = () => {
     <>
       <motion.h1
         drag
-        dragConstraints={{left:0 , right:0 , top:0 , bottom:0}}
+        dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
         dragElastic={0.2}
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -76,87 +76,105 @@ const Board = () => {
       >
         Tic Tac Toe
       </motion.h1>
-      <AnimatePresence mode="wait">
-        {isWinner ? (
-          // Victory Message
-          <motion.Fragment
-            key="victor"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{duration: 0.2}}
-            exit={{ opacity: 0 }}
+
+      {isWinner ? (
+        // Victory Message
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.2 }}
+          exit={{ opacity: 0 }}
+        >
+          <h3>
+            {isWinner} won!!! <br /> ❤️❤️❤️{" "}
+          </h3>
+          {/* <motion.button
+            className="playAgain"
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setSlot(Array(9).fill(null))}
           >
-            <h3>{isWinner} won!!! <br /> ❤️❤️❤️ </h3>
-            <button className="playAgain" onClick={() => setSlot(Array(9).fill(null))}>
-              Play Again
-            </button>
-          </motion.Fragment>
-        ) : (
-          // Game Board
-          <Fragment>
-            <h3>Next turn: {turnX ? "⭐" || "X" : "⭕" || "0"}</h3>
-            <motion.div
-              // drag
-              // dragConstraints={{left:0 , right:0 , top:0 , bottom:0}}
-              key="game"
-              className="board-container"
-              variants={container}
-              initial="hidden"
-              animate="visible"
-              onAnimationComplete={() => setExitComp(false)}
-              // exit={{ opacity: 0 }}
-            >
-              <Slot
-                slot={slot[0]}
-                onClick={() => clickBtn(0)}
-                variants={item}
-              />
-              <Slot
-                slot={slot[1]}
-                onClick={() => clickBtn(1)}
-                variants={item}
-              />
-              <Slot
-                slot={slot[2]}
-                onClick={() => clickBtn(2)}
-                variants={item}
-              />
+            Play Again
+          </motion.button> */}
+        </motion.div>
+      ) : (
+        // Game Board
+        <Fragment>
+          <h3>Next turn: {turnX ? "⭐" || "X" : "⭕" || "0"}</h3>
+          <motion.div
+            className="board-container"
+            variants={container}
+            initial="hidden"
+            animate="visible"
+            onAnimationComplete={() => setExitComp(false)}
+          >
+            <Slot
+              turnX={turnX}
+              slot={slot[0]}
+              onClick={() => clickBtn(0)}
+              variants={item}
+            />
+            <Slot
+              slot={slot[1]}
+              onClick={() => clickBtn(1)}
+              variants={item}
+              turnX={turnX}
+            />
+            <Slot
+              slot={slot[2]}
+              onClick={() => clickBtn(2)}
+              variants={item}
+              turnX={turnX}
+            />
 
-              <Slot
-                slot={slot[3]}
-                onClick={() => clickBtn(3)}
-                variants={item}
-              />
-              <Slot
-                slot={slot[4]}
-                onClick={() => clickBtn(4)}
-                variants={item}
-              />
-              <Slot
-                slot={slot[5]}
-                onClick={() => clickBtn(5)}
-                variants={item}
-              />
+            <Slot
+              slot={slot[3]}
+              onClick={() => clickBtn(3)}
+              variants={item}
+              turnX={turnX}
+            />
+            <Slot
+              slot={slot[4]}
+              onClick={() => clickBtn(4)}
+              variants={item}
+              turnX={turnX}
+            />
+            <Slot
+              slot={slot[5]}
+              onClick={() => clickBtn(5)}
+              variants={item}
+              turnX={turnX}
+            />
 
-              <Slot
-                slot={slot[6]}
-                onClick={() => clickBtn(6)}
-                variants={item}
-              />
-              <Slot
-                slot={slot[7]}
-                onClick={() => clickBtn(7)}
-                variants={item}
-              />
-              <Slot
-                slot={slot[8]}
-                onClick={() => clickBtn(8)}
-                variants={item}
-              />
-            </motion.div>
-          </Fragment>
-        )}
-      </AnimatePresence>
+            <Slot
+              slot={slot[6]}
+              onClick={() => clickBtn(6)}
+              variants={item}
+              turnX={turnX}
+            />
+            <Slot
+              slot={slot[7]}
+              onClick={() => clickBtn(7)}
+              variants={item}
+              turnX={turnX}
+            />
+            <Slot
+              slot={slot[8]}
+              onClick={() => clickBtn(8)}
+              variants={item}
+              turnX={turnX}
+            />
+          </motion.div>
+        </Fragment>
+      )}
+
+      <motion.button
+        className="playAgain"
+        variants={container}
+        whileTap={{ scale: 0.95 }}
+        onClick={() => {setSlot(Array(9).fill(null)) , () => setExitComp(false)}}
+      >
+        Play Again
+      </motion.button>
     </>
   );
 };
